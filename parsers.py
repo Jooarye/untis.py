@@ -28,7 +28,7 @@ class UntisParser:
 
     def get_object(self, id: int, obj_type):
         for obj in self.objects:
-            if obj.id == id and isinstance(obj, obj_type):
+            if obj.id == id and (obj_type == None or isinstance(obj, obj_type)):
                 return obj
         
         return None

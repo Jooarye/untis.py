@@ -44,23 +44,23 @@ def get_json_info(username: str, password: str, school: str, date: Date, id: str
 
     return data_response.content
 
-logging = False
+if __name__ == '__main__':
+    logging = False
+    school = input("School > ")
+    date = input("Date > ")
+    user = input("Username > ")
+    password = getpass(prompt="Password > ")
 
-school = input("School > ")
-date = input("Date > ")
-user = input("Username > ")
-password = getpass(prompt="Password > ")
+    day, month, year = (int(x) for x in date.split('.'))
 
-day, month, year = (int(x) for x in date.split('.'))
+    d = Date(day, month, year)
 
-d = Date(day, month, year)
+    if logging:
+        print("[*] Parsing info ...")
 
-if logging:
-    print("[*] Parsing info ...")
+    parser = UntisParser(loads(get_json_info(user, password, school, d, "305", log=logging)))
 
-parser = UntisParser(loads(get_json_info(user, password, school, d, "305", log=logging)))
+    lessons = select(parser.get_lessons(), key=lambda x: x.date == d)
+    lessons_sorted = selection_sort(lessons, key=lambda x, y: x.end < y.start)
 
-lessons = select(parser.get_lessons(), key=lambda x: x.date == d)
-lessons_sorted = selection_sort(lessons, key=lambda x, y: x.end < y.start)
-
-print("\n".join([str(x) for x in lessons_sorted]))
+    print("\n".join([str(x) for x in lessons_sorted]))
