@@ -1,5 +1,5 @@
-from objects import Lesson, Teacher, Subject, Room
-from utils import parse_date, parse_time
+from .objects import Lesson, Teacher, Subject, Room
+from .utils import parse_date, parse_time
 
 
 class UntisParser:
