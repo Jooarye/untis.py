@@ -1,10 +1,9 @@
-from utils import selection_sort, select
-from parsers import UntisParser
+from .utils import selection_sort, select
+from .parsers import UntisParser
 from requests import get, post
 from getpass import getpass
-from objects import Date
+from .objects import Date
 from json import loads
-from sys import argv
 
 
 def get_json_info(username: str, password: str, school: str, date: Date, id: str, log=True):
@@ -28,6 +27,9 @@ def get_json_info(username: str, password: str, school: str, date: Date, id: str
 
     cookies = " ".join([v for k, v in response.headers.items() if k.lower() == "set-cookie"])
 
+    if 'auth' not in cookies:
+        raise Exception("Login failed!")
+
     if log:
         print("[*] Pulling information ...")
 
@@ -43,6 +45,7 @@ def get_json_info(username: str, password: str, school: str, date: Date, id: str
     })
 
     return data_response.content
+
 
 if __name__ == '__main__':
     logging = False
