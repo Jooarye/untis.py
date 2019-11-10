@@ -1,4 +1,5 @@
 from typing import List
+from datetime import date
 
 
 class UntisObject:
@@ -12,11 +13,15 @@ class Date:
         self.month = month
         self.year = year
 
+    @staticmethod
+    def from_datetime(d: date):
+        return Date(d.day, d.month, d.year)
+
     def __eq__(self, other):
         return self.day == other.day and self.month == other.month and self.year == other.year
 
     def __str__(self):
-        return f"{self.day:0>2d}.{self.month:0>2d}.{self.year:0>4d}"
+        return f"{self.month:0>2d}/{self.day:0>2d}/{self.year:0>4d}"
 
 
 class Time:
@@ -34,7 +39,10 @@ class Time:
         return self.hours < other.hours or (self.hours == other.hours and self.minutes < other.minutes)
 
     def __str__(self):
-        return f"{self.hours:0>2d}:{self.minutes:0>2d}"
+        pm = self.hours >= 13
+        hrs = self.hours if not pm and self.hours != 13 else self.hours - 12
+
+        return f"{hrs:0>2d}:{self.minutes:0>2d} {'pm' if pm else 'am'}"
 
 
 class Teacher(UntisObject):
@@ -85,6 +93,7 @@ class Lesson(UntisObject):
         self.exam = exam
         self.substitution = substitution
         self.additional = additional
+        self.standard = not substitution and not additional
         super(Lesson, self).__init__(id)
 
     def __str__(self):
