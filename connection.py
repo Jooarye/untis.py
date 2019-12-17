@@ -53,7 +53,8 @@ if __name__ == '__main__':
     date = input("Date > ")
     user = input("Username > ")
     password = getpass(prompt="Password > ")
-
+    id = "YOUR SCHOOL ID"
+    
     day, month, year = (int(x) for x in date.split('.'))
 
     d = Date(day, month, year)
@@ -61,7 +62,7 @@ if __name__ == '__main__':
     if logging:
         print("[*] Parsing info ...")
 
-    parser = UntisParser(loads(get_json_info(user, password, school, d, "305", log=logging)))
+    parser = UntisParser(loads(get_json_info(user, password, school, d, id, log=logging)))
 
     lessons = select(parser.get_lessons(), key=lambda x: x.date == d)
     lessons_sorted = selection_sort(lessons, key=lambda x, y: x.end < y.start)
